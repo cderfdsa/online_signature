@@ -74,6 +74,7 @@ function getViewerConfiguration() {
       zoomOut: document.getElementById('zoomOut'),
       viewFind: document.getElementById('viewFind'),
       openFile: document.getElementById('openFile'),
+      closeFile: document.getElementById('closeFile'),
       print: document.getElementById('print'),
       presentationModeButton: document.getElementById('presentationMode'),
       download: document.getElementById('download'),
@@ -180,7 +181,7 @@ function webViewerLoad() {
   let config = getViewerConfiguration();
 
   // 创建API
-  createApi();
+  createApi(config);
 
   if (typeof PDFJSDev === 'undefined' || !PDFJSDev.test('PRODUCTION')) {
     Promise.all([
@@ -204,13 +205,12 @@ function webViewerLoad() {
   }
 }
 
-function createApi() {
+function createApi(config) {
   let defaultSettings = {
     tools: {
       viewOutline: true,
       viewThumbnail: true,
       viewAttachments: true,
-      sidebarToggle: true,
       viewFind: true,
       firstPage: true,
       lastPage: true,
@@ -227,10 +227,10 @@ function createApi() {
       pageRotateCcw: true
     },
     pageNumberNavitorTo: function () {},
-    getCurrentPage: function() {
+    getCurrentPage: function () {
       return PDFViewerApplication.page;
     },
-    getPageCount: function() {
+    getPageCount: function () {
       return PDFViewerApplication.pagesCount;
     },
     openPath: function (path) {
@@ -243,6 +243,428 @@ function createApi() {
 
   window.epSignTools = window.epSignTools || {};
   Util.extend(window.epSignTools, defaultSettings);
+
+  handleBarIconToggle(config, epSignTools.tools);
+}
+
+function handleBarIconToggle(config, tools) {
+  var toolbar = config.toolbar,
+    sidebar = config.sidebar,
+    secondaryToolbar = config.secondaryToolbar;
+
+  var toggleViewOutline = function (val) {
+    var outlineButton = sidebar.outlineButton;
+
+    val ? outlineButton.removeAttribute('hidden') : outlineButton.setAttribute(
+      'hidden', true);
+  };
+
+  var toggleViewThumbnail = function (val) {
+    var thumbnailButton = sidebar.thumbnailButton;
+
+    val ? thumbnailButton.removeAttribute('hidden') : thumbnailButton.setAttribute(
+      'hidden', true);
+  };
+
+  var toggleViewAttachments = function (val) {
+    var attachmentsButton = sidebar.attachmentsButton;
+
+    val ? attachmentsButton.removeAttribute('hidden') : attachmentsButton.setAttribute(
+      'hidden', true);
+  };
+
+  var toggleViewFind = function (val) {
+    var viewFind = toolbar.viewFind;
+
+    val ? viewFind.removeAttribute('hidden') : viewFind.setAttribute('hidden',
+      true);
+  };
+
+  var toggleFirstPage = function (val) {
+    var firstPageButton = secondaryToolbar.firstPageButton;
+
+    val ? firstPageButton.removeAttribute('hidden') : firstPageButton.setAttribute(
+      'hidden', true);
+  };
+
+  var toggleLastPage = function (val) {
+    var lastPageButton = secondaryToolbar.lastPageButton;
+
+    val ? lastPageButton.removeAttribute('hidden') : lastPageButton.setAttribute(
+      'hidden', true);
+  };
+
+  var toggleSplitToolbar = function (val) {
+    var previous = toolbar.previous,
+      next = toolbar.next;
+
+    if (val) {
+      previous.removeAttribute('hidden');
+      next.removeAttribute('hidden');
+    } else {
+      previous.setAttribute('hidden', true);
+      next.setAttribute('hidden', true);
+    }
+  };
+
+  var toggleZoom = function (val) {
+    var zoomIn = toolbar.zoomIn,
+      zoomOut = toolbar.zoomOut;
+
+    if (val) {
+      zoomIn.removeAttribute('hidden');
+      zoomOut.removeAttribute('hidden');
+    } else {
+      zoomIn.setAttribute('hidden', true);
+      zoomOut.setAttribute('hidden', true);
+    }
+  };
+
+  var toggleScaleSelect = function (val) {
+    var scaleSelect = toolbar.scaleSelect;
+
+    val ? scaleSelect.removeAttribute('hidden') : scaleSelect.setAttribute(
+      'hidden', true);
+  };
+
+  var toggleOpenFile = function (val) {
+    var openFile = toolbar.openFile;
+
+    val ? openFile.removeAttribute('hidden') : openFile.setAttribute('hidden',
+      true);
+  };
+
+  var toggleCloseFile = function (val) {
+    var closeFile = toolbar.closeFile;
+
+    val ? closeFile.removeAttribute('hidden') : closeFile.setAttribute(
+      'hidden', true);
+  };
+
+  var toggleFullScreen = function (val) {
+    var presentationModeButton = toolbar.presentationModeButton;
+
+    val ? presentationModeButton.removeAttribute('hidden') :
+      presentationModeButton.setAttribute('hidden', true);
+  };
+
+  var togglePrint = function (val) {
+    var print = toolbar.print;
+
+    val ? print.removeAttribute('hidden') : print.setAttribute('hidden', true);
+  };
+
+  var toggleDownload = function (val) {
+    var download = toolbar.download;
+
+    val ? download.removeAttribute('hidden') : download.setAttribute('hidden',
+      true);
+  };
+
+  var toggleSecondaryToolbar = function (val) {
+    var toggleButton = secondaryToolbar.toggleButton;
+
+    val ? toggleButton.removeAttribute('hidden') : toggleButton.setAttribute(
+      'hidden', true);
+  };
+
+  var toggleViewBookMark = function (val) {
+    var toggleViewBook = secondaryToolbar.viewBookmarkButton;
+
+    val ? toggleViewBook.removeAttribute('hidden') : toggleViewBook.setAttribute(
+      'hidden', true);
+  };
+
+  var togglePageRotateCw = function (val) {
+    var togglePageRotateCw = secondaryToolbar.pageRotateCwButton;
+
+    val ? togglePageRotateCw.removeAttribute('hidden') : togglePageRotateCw.setAttribute(
+      'hidden', true);
+  };
+
+  var togglePageRotateCcw = function (val) {
+    var togglePageRotateCcw = secondaryToolbar.pageRotateCcwButton;
+
+    val ? togglePageRotateCcw.removeAttribute('hidden') : togglePageRotateCcw
+      .setAttribute('hidden', true);
+  };
+
+  // 初始化处理所有按钮
+  for (var k in tools) {
+    var itemVal = tools[k];
+
+    switch (k) {
+      case 'viewOutline':
+        toggleViewOutline(itemVal);
+        break;
+
+      case 'viewThumbnail':
+        toggleViewThumbnail(itemVal);
+        break;
+
+      case 'viewAttachments':
+        toggleViewAttachments(itemVal);
+        break;
+
+      case 'sidebarToggle':
+        toggleSidebar(itemVal);
+        break;
+
+      case 'viewFind':
+        toggleViewFind(itemVal)
+        break;
+
+      case 'firstPage':
+        toggleFirstPage(itemVal);
+        break;
+
+      case 'lastPage':
+        toggleLastPage(itemVal);
+        break;
+
+      case 'splitToolbarButton':
+        toggleSplitToolbar(itemVal);
+        break;
+
+      case 'zoom':
+        toggleZoom(itemVal);
+        break;
+
+      case 'scaleSelect':
+        toggleScaleSelect(itemVal);
+        break;
+
+      case 'openFile':
+        toggleOpenFile(itemVal);
+        break;
+
+      case 'closeFile':
+        toggleCloseFile(itemVal);
+        break;
+
+      case 'fullScreen':
+        toggleFullScreen(itemVal);
+        break;
+
+      case 'print':
+        togglePrint(itemVal);
+        break;
+
+      case 'download':
+        toggleDownload(itemVal);
+        break;
+
+      case 'secondaryToolbar':
+        toggleSecondaryToolbar(itemVal);
+        break;
+
+      case 'viewBookmark':
+        toggleViewBookMark(itemVal);
+        break;
+
+      case 'pageRotateCw':
+        togglePageRotateCw(itemVal);
+        break;
+
+      case 'pageRotateCcw':
+        togglePageRotateCcw(itemVal);
+        break;
+    }
+  }
+
+  // 监听按钮变化
+  Object.defineProperties(epSignTools.tools, {
+    'viewOutline': {
+      set: function (newVal) {
+        toggleViewOutline(newVal);
+
+        val = newVal;
+      },
+      get: function () {
+        return val;
+      }
+    },
+    'viewThumbnail': {
+      set: function (newVal) {
+        toggleViewThumbnail(newVal);
+
+        val = newVal;
+      },
+      get: function () {
+        return val;
+      }
+    },
+    'viewAttachments': {
+      set: function (newVal) {
+        toggleViewAttachments(newVal);
+
+        val = newVal;
+      },
+      get: function () {
+        return val;
+      }
+    },
+    'sidebarToggle': {
+      set: function (newVal) {
+        toggleSidebar(newVal);
+
+        val = newVal;
+      },
+      get: function () {
+        return val;
+      }
+    },
+    'viewFind': {
+      set: function (newVal) {
+        toggleViewFind(newVal);
+
+        val = newVal;
+      },
+      get: function () {
+        return val;
+      }
+    },
+    'firstPage': {
+      set: function (newVal) {
+        toggleFirstPage(newVal);
+
+        val = newVal;
+      },
+      get: function () {
+        return val;
+      }
+    },
+    'lastPage': {
+      set: function (newVal) {
+        toggleLastPage(newVal);
+
+        val = newVal;
+      },
+      get: function () {
+        return val;
+      }
+    },
+    'splitToolbarButton': {
+      set: function (newVal) {
+        toggleSplitToolbar(newVal);
+
+        val = newVal;
+      },
+      get: function () {
+        return val;
+      }
+    },
+    'zoom': {
+      set: function (newVal) {
+        toggleSidebar(newVal);
+
+        val = newVal;
+      },
+      get: function () {
+        return val;
+      }
+    },
+    'scaleSelect': {
+      set: function (newVal) {
+        toggleScaleSelect(newVal);
+
+        val = newVal;
+      },
+      get: function () {
+        return val;
+      }
+    },
+    'openFile': {
+      set: function (newVal) {
+        toggleOpenFile(newVal);
+
+        val = newVal;
+      },
+      get: function () {
+        return val;
+      }
+    },
+    'closeFile': {
+      set: function (newVal) {
+        toggleCloseFile(newVal);
+
+        val = newVal;
+      },
+      get: function () {
+        return val;
+      }
+    },
+    'fullScreen': {
+      set: function (newVal) {
+        toggleFullScreen(newVal);
+
+        val = newVal;
+      },
+      get: function () {
+        return val;
+      }
+    },
+    'print': {
+      set: function (newVal) {
+        togglePrint(newVal);
+
+        val = newVal;
+      },
+      get: function () {
+        return val;
+      }
+    },
+    'download': {
+      set: function (newVal) {
+        toggleDownload(newVal);
+
+        val = newVal;
+      },
+      get: function () {
+        return val;
+      }
+    },
+    'secondaryToolbar': {
+      set: function (newVal) {
+        toggleSecondaryToolbar(newVal);
+
+        val = newVal;
+      },
+      get: function () {
+        return val;
+      }
+    },
+    'viewBookmark': {
+      set: function (newVal) {
+        toggleViewBookMark(newVal);
+
+        val = newVal;
+      },
+      get: function () {
+        return val;
+      }
+    },
+    'pageRotateCw': {
+      set: function (newVal) {
+        togglePageRotateCw(newVal);
+
+        val = newVal;
+      },
+      get: function () {
+        return val;
+      }
+    },
+    'pageRotateCcw': {
+      set: function (newVal) {
+        togglePageRotateCcw(newVal);
+
+        val = newVal;
+      },
+      get: function () {
+        return val;
+      }
+    }
+  });
 }
 
 if (document.readyState === 'interactive' ||

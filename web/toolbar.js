@@ -144,6 +144,10 @@ class Toolbar {
       eventBus.dispatch('openfile', { source: self, });
     });
 
+    items.closeFile.addEventListener('click', function() {
+      eventBus.dispatch('closefile', { source: self, });
+    });
+
     items.print.addEventListener('click', function() {
       eventBus.dispatch('print', { source: self, });
     });
