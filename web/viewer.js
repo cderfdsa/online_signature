@@ -82,10 +82,10 @@ function getViewerConfiguration() {
     secondaryToolbar: {
       toolbar: document.getElementById('secondaryToolbar'),
       toggleButton: document.getElementById('secondaryToolbarToggle'),
-      toolbarButtonContainer:
-        document.getElementById('secondaryToolbarButtonContainer'),
-      presentationModeButton:
-        document.getElementById('secondaryPresentationMode'),
+      toolbarButtonContainer: document.getElementById(
+        'secondaryToolbarButtonContainer'),
+      presentationModeButton: document.getElementById(
+        'secondaryPresentationMode'),
       openFileButton: document.getElementById('secondaryOpenFile'),
       printButton: document.getElementById('secondaryPrint'),
       downloadButton: document.getElementById('secondaryDownload'),
@@ -178,13 +178,17 @@ function getViewerConfiguration() {
 
 function webViewerLoad() {
   let config = getViewerConfiguration();
+
+  // 创建API
+  createApi();
+
   if (typeof PDFJSDev === 'undefined' || !PDFJSDev.test('PRODUCTION')) {
     Promise.all([
       SystemJS.import('pdfjs-web/app'),
       SystemJS.import('pdfjs-web/app_options'),
       SystemJS.import('pdfjs-web/genericcom'),
       SystemJS.import('pdfjs-web/pdf_print_service'),
-    ]).then(function([app, appOptions, ...otherModules]) {
+    ]).then(function ([app, appOptions, ...otherModules]) {
       window.PDFViewerApplication = app.PDFViewerApplication;
       window.PDFViewerApplicationOptions = appOptions.AppOptions;
       app.PDFViewerApplication.run(config);
@@ -200,8 +204,49 @@ function webViewerLoad() {
   }
 }
 
+function createApi() {
+  let defaultSettings = {
+    tools: {
+      viewOutline: true,
+      viewThumbnail: true,
+      viewAttachments: true,
+      sidebarToggle: true,
+      viewFind: true,
+      firstPage: true,
+      lastPage: true,
+      splitToolbarButton: true,
+      zoom: true,
+      scaleSelect: true,
+      openFile: true,
+      closeFile: true,
+      fullScreen: true,
+      print: true,
+      download: true,
+      secondaryToolbar: true,
+      pageRotateCw: true,
+      pageRotateCcw: true
+    },
+    pageNumberNavitorTo: function () {},
+    getCurrentPage: function() {
+      return PDFViewerApplication.page;
+    },
+    getPageCount: function() {
+      return PDFViewerApplication.pagesCount;
+    },
+    openPath: function (path) {
+      window.webViewerOpenFileViaURL(path);
+    },
+    linkTo: function (text) {
+      window.linkTo && window.linkTo(text);
+    }
+  };
+
+  window.epSignTools = window.epSignTools || {};
+  Util.extend(window.epSignTools, defaultSettings);
+}
+
 if (document.readyState === 'interactive' ||
-    document.readyState === 'complete') {
+  document.readyState === 'complete') {
   webViewerLoad();
 } else {
   document.addEventListener('DOMContentLoaded', webViewerLoad, true);

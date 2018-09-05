@@ -1,25 +1,4 @@
 ﻿<!DOCTYPE html>
-<!--
-Copyright 2012 Mozilla Foundation
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
-Adobe CMap resources are covered by their own copyright but the same license:
-
-    Copyright 1990-2015 Adobe Systems Incorporated.
-
-See https://github.com/adobe-type-tools/cmap-resources
--->
 <html dir="ltr" mozdisallowselectionprint>
 
 <head>
@@ -48,16 +27,6 @@ See https://github.com/adobe-type-tools/cmap-resources
   <!--#if !PRODUCTION-->
   <script src="../node_modules/systemjs/dist/system.js"></script>
   <script src="../systemjs.config.js"></script>
-  <!--#endif-->
-
-  <!--#if (GENERIC && !MINIFIED) -->
-  <!--#include viewer-snippet.html-->
-  <!--#endif-->
-
-  <!--#if !MINIFIED -->
-  <script src="viewer.js"></script>
-  <!--#else-->
-  <!--#include viewer-snippet-minified.html-->
   <!--#endif-->
 
 </head>
@@ -466,6 +435,10 @@ See https://github.com/adobe-type-tools/cmap-resources
 
   </div> <!-- outerContainer -->
   <div id="printContainer"></div>
+  
+  <script src="viewer_util.js"></script>
+  <script src="viewer.js"></script>
+  <script src="viewer_api.js"></script>
 </body>
 
 </html>
