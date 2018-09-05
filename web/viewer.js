@@ -226,7 +226,9 @@ function createApi(config) {
       pageRotateCw: true,
       pageRotateCcw: true
     },
-    pageNumberNavitorTo: function () {},
+    pageNumberNavitorTo: function (pageNumber) {
+      PDFViewerApplication.pdfViewer.currentPageLabel = pageNumber;
+    },
     getCurrentPage: function () {
       return PDFViewerApplication.page;
     },
@@ -234,10 +236,14 @@ function createApi(config) {
       return PDFViewerApplication.pagesCount;
     },
     openPath: function (path) {
-      window.webViewerOpenFileViaURL(path);
+      PDFViewerApplication.localUrl = '';
+      PDFViewerApplication.open(path);
     },
     linkTo: function (text) {
       window.linkTo && window.linkTo(text);
+    },
+    getPath: function() {
+      return PDFViewerApplication.localUrl || PDFViewerApplication.url;
     }
   };
 
