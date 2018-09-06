@@ -929,6 +929,7 @@ var PDFPageProxy = (function PDFPageProxyClosure() {
                                                                 intent);
         this.annotationsIntent = intent;
       }
+
       return this.annotationsPromise;
     },
     /**

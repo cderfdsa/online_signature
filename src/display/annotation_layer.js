@@ -66,6 +66,7 @@ class AnnotationElementFactory {
           case 'Ch':
             return new ChoiceWidgetAnnotationElement(parameters);
         }
+
         return new WidgetAnnotationElement(parameters);
 
       case AnnotationType.POPUP:
@@ -1218,6 +1219,7 @@ class AnnotationLayer {
         renderInteractiveForms: parameters.renderInteractiveForms || false,
         svgFactory: new DOMSVGFactory(),
       });
+
       if (element.isRenderable) {
         parameters.div.appendChild(element.render());
       }

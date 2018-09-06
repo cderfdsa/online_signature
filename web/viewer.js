@@ -240,7 +240,40 @@ function createApi(config) {
       PDFViewerApplication.open(path);
     },
     linkTo: function (text) {
-      window.linkTo && window.linkTo(text);
+      var outline = PDFViewerApplication.pdfOutlineViewer.outline;
+
+      if (outline && Array.isArray(outline)) {
+
+        for (let i = 0, len = outline.length; i < len; i++) {
+          const item = outline[i],
+            title = item.title,
+            items = item.items;
+
+          if (~title.indexOf(text)) {
+            PDFViewerApplication.pdfOutlineViewer.linkService.navigateTo(item.dest);
+
+            return;
+          }
+          else if (items && Array.isArray(items)) {
+            let k = 0;
+
+            while(k < items.length) {
+              const _item = items[k];
+
+              if (~_item.title.indexOf(text)) {
+                PDFViewerApplication.pdfOutlineViewer.linkService.navigateTo(_item.dest);
+
+                return;
+              }
+
+              k++;
+            }
+          }
+        }
+      }
+      else {
+        alert('无书签页');
+      }
     },
     getPath: function() {
       return PDFViewerApplication.localUrl || PDFViewerApplication.url;
@@ -249,6 +282,27 @@ function createApi(config) {
 
   window.epSignTools = window.epSignTools || {};
   Util.extend(window.epSignTools, defaultSettings);
+
+  Object.defineProperties(window.epSignTools, {
+    'tools': {
+      writable: false
+    },
+    'pageNumberNavitorTo': {
+      writable: false
+    },
+    'getCurrentPage': {
+      writable: false
+    },
+    'getPageCount': {
+      writable: false
+    },
+    'openPath': {
+      writable: false
+    },
+    'linkTo': {
+      writable: false
+    }
+  });
 
   handleBarIconToggle(config, epSignTools.tools);
 }

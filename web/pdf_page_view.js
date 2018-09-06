@@ -487,6 +487,7 @@ class PDFPageView {
           createAnnotationLayerBuilder(div, pdfPage, this.imageResourcesPath,
                                        this.renderInteractiveForms, this.l10n);
       }
+
       this.annotationLayer.render(this.viewport, 'display');
     }
     div.setAttribute('data-loaded', true);

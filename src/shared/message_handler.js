@@ -172,8 +172,10 @@ MessageHandler.prototype = {
       data,
       callbackId,
     };
+
     var capability = createPromiseCapability();
     this.callbacksCapabilities[callbackId] = capability;
+
     try {
       this.postMessage(message, transfers);
     } catch (e) {

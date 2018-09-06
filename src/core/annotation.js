@@ -86,6 +86,7 @@ class AnnotationFactory {
         }
         warn('Unimplemented widget field type "' + fieldType + '", ' +
              'falling back to base field type.');
+             
         return new WidgetAnnotation(parameters);
 
       case 'Popup':
@@ -612,7 +613,7 @@ class WidgetAnnotation extends Annotation {
 
     // Hide signatures because we cannot validate them.
     if (data.fieldType === 'Sig') {
-      this.setFlags(AnnotationFlag.HIDDEN);
+      // this.setFlags(AnnotationFlag.HIDDEN);
     }
   }
 
